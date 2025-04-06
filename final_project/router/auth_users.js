@@ -54,15 +54,33 @@ regd_users.post("/login", (req,res) => {
 regd_users.put("/auth/review/:isbn", (req, res) => {
     const isbn = req.params.isbn;
 
-    if(!books[isbn]){
-        return res.status(404).json({message: "The ISBN number is invalid!"});
-    } else {
-        const username = req.session.username;
-        const review = req.query.review;
-        books[isbn].reviews[username] = review;
+    if (!books[isbn]) {
+        return res.status(404).json({ message: "The ISBN number is invalid!" });
+    }
 
-        return res.status(200).json({message: "Book review has been added!"});
-    }   
+    const username = req.session.authorization.username;
+    const review = req.query.review;
+
+    books[isbn].reviews[username] = review;
+
+    return res.status(200).json({ message: "Book review has been added!" }); 
+});
+
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    const isbn = req.params.isbn;
+
+    if (!books[isbn]) {
+        return res.status(404).json({ message: "The ISBN number is invalid!" });
+    }
+
+    const username = req.session.authorization.username;
+
+    if (books[isbn].reviews[username]) {
+        delete books[isbn].reviews[username];
+        return res.status(200).json({ message: "Book review has been deleted!" });
+    } else {
+        return res.status(404).json({ message: "No review found to delete for this user!" });
+    }
 });
 
 module.exports.authenticated = regd_users;
