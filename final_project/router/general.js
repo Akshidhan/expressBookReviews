@@ -23,13 +23,34 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-    res.send(JSON.stringify(books));
+    let getBooks = new Promise((resolve, reject) => {
+        resolve(books);
+    });
+
+    getBooks
+        .then((bookList) => {
+            res.send(JSON.stringify(bookList));
+        })
+        .catch((err) => {
+            res.status(500).json({ message: "Error retrieving books." });
+        });
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
     const isbn = req.params.isbn;
-    res.send(books[isbn]);
+
+    let getBooks = new Promise((resolve, reject) => {
+        resolve(books[isbn]);
+    });
+
+    getBooks
+        .then((bookList) => {
+            res.send(bookList);
+        })
+        .catch((err) => {
+            res.status(500).json({ message: "Error retrieving books." });
+        });
 });
   
 // Get book details based on author
@@ -40,7 +61,17 @@ public_users.get('/author/:author',function (req, res) {
         return book.author === author;
     });
 
-    res.send(matchedBooks);
+    let getBooks = new Promise((resolve, reject) => {
+        resolve(matchedBooks);
+    });
+
+    getBooks
+        .then((bookList) => {
+            res.send(bookList);
+        })
+        .catch((err) => {
+            res.status(500).json({ message: "Error retrieving books." });
+        });
 });
 
 // Get all books based on title
@@ -51,7 +82,17 @@ public_users.get('/title/:title',function (req, res) {
       return book.title === title;
     });
   
-    res.send(matchedBooks);
+    let getBooks = new Promise((resolve, reject) => {
+        resolve(matchedBooks);
+    });
+
+    getBooks
+        .then((bookList) => {
+            res.send(bookList);
+        })
+        .catch((err) => {
+            res.status(500).json({ message: "Error retrieving books." });
+        });
 });
 
 //  Get book review
