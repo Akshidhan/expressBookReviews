@@ -1,4 +1,6 @@
-# Distribution / packaging
-node_modules
-
-
+# Distribution / packaging
+node_modules
+
+
+config.bat
+.env
